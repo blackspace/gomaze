@@ -3,7 +3,7 @@ Install
 First because the gomaze draws the maze by the sdl2,you should install go-sdl2 
 
 ```
-github.com/veandco/go-sdl2/sdl
+go get github.com/veandco/go-sdl2/sdl
 ```
 
 
