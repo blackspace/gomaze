@@ -5,7 +5,7 @@ type PointSet struct {
 }
 
 func NewPointSet() *PointSet {
-	return &PointSet{_data:make([]int,0,1000)}
+	return &PointSet{_data:make([]int,0,100)}
 }
 
 func (p *PointSet)Add(x,y int) {
