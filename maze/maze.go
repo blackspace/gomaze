@@ -118,26 +118,26 @@ func (m *Maze)IsOpen(x,y,direction int) bool {
 
 }
 
-func (m *Maze)GetOpenPointSet(cx,cy int,ps *PointSet){
+func (m *Maze)GetJoiningPointSet(cx,cy int,ps *PointSet){
 	ps.Add(cx,cy)
 
 	if m.Get(cx,cy-1)!=nil && !ps.HasPoint(cx,cy-1) && m.IsOpen(cx,cy,UP) {
-		m.GetOpenPointSet(cx,cy-1,ps)
+		m.GetJoiningPointSet(cx,cy-1,ps)
 
 	}
 
 	if m.Get(cx,cy+1)!=nil && !ps.HasPoint(cx,cy+1) && m.IsOpen(cx,cy,DOWN) {
-		m.GetOpenPointSet(cx,cy+1,ps)
+		m.GetJoiningPointSet(cx,cy+1,ps)
 
 	}
 
 	if m.Get(cx-1,cy)!=nil && !ps.HasPoint(cx-1,cy) && m.IsOpen(cx,cy,LEFT) {
-		m.GetOpenPointSet(cx-1,cy,ps)
+		m.GetJoiningPointSet(cx-1,cy,ps)
 
 	}
 
 	if m.Get(cx+1,cy)!=nil && !ps.HasPoint(cx+1,cy) && m.IsOpen(cx,cy,RIGHT) {
-		m.GetOpenPointSet(cx+1,cy,ps)
+		m.GetJoiningPointSet(cx+1,cy,ps)
 	}
 }
 
@@ -266,25 +266,25 @@ func BuildMaze(w int,r int) * Maze {
 			switch a {
 			case UP:
 				ps := NewPointSet()
-				mm.GetOpenPointSet(ww.current_x, ww.current_y, ps)
+				mm.GetJoiningPointSet(ww.current_x, ww.current_y, ps)
 				if !ps.HasPoint(ww.current_x, ww.current_y - 1) {
 					next_act_final = append(next_act_final, UP)
 				}
 			case DOWN:
 				ps := NewPointSet()
-				mm.GetOpenPointSet(ww.current_x, ww.current_y, ps)
+				mm.GetJoiningPointSet(ww.current_x, ww.current_y, ps)
 				if !ps.HasPoint(ww.current_x, ww.current_y + 1) {
 					next_act_final = append(next_act_final, DOWN)
 				}
 			case LEFT:
 				ps := NewPointSet()
-				mm.GetOpenPointSet(ww.current_x, ww.current_y, ps)
+				mm.GetJoiningPointSet(ww.current_x, ww.current_y, ps)
 				if !ps.HasPoint(ww.current_x - 1, ww.current_y) {
 					next_act_final = append(next_act_final, LEFT)
 				}
 			case RIGHT:
 				ps := NewPointSet()
-				mm.GetOpenPointSet(ww.current_x, ww.current_y, ps)
+				mm.GetJoiningPointSet(ww.current_x, ww.current_y, ps)
 				if !ps.HasPoint(ww.current_x + 1, ww.current_y) {
 					next_act_final = append(next_act_final, RIGHT)
 				}
