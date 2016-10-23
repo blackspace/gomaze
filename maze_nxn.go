@@ -11,7 +11,7 @@ func main() {
 	sdl.Init(sdl.INIT_EVERYTHING)
 
 	const W=1000
-	const H=800
+	const H=1000
 
 	window, err := sdl.CreateWindow("test", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		W, H, sdl.WINDOW_SHOWN)
@@ -31,7 +31,7 @@ func main() {
 	defer renderer.Destroy()
 
 	w:=10
-	n:=7
+	n:=9
 	renderer.SetDrawColor(0, 0, 0, 255)
 	renderer.Clear()
 
