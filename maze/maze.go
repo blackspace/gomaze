@@ -262,29 +262,23 @@ func BuildMaze(w int,r int) * Maze {
 			next_act_0 =append(next_act_0,RIGHT)
 		}
 
+		ps := NewPointSet()
+		mm.GetJoiningPointSet(ww.current_x, ww.current_y, ps)
 		for _,a:=range next_act_0 {
 			switch a {
 			case UP:
-				ps := NewPointSet()
-				mm.GetJoiningPointSet(ww.current_x, ww.current_y, ps)
 				if !ps.HasPoint(ww.current_x, ww.current_y - 1) {
 					next_act_final = append(next_act_final, UP)
 				}
 			case DOWN:
-				ps := NewPointSet()
-				mm.GetJoiningPointSet(ww.current_x, ww.current_y, ps)
 				if !ps.HasPoint(ww.current_x, ww.current_y + 1) {
 					next_act_final = append(next_act_final, DOWN)
 				}
 			case LEFT:
-				ps := NewPointSet()
-				mm.GetJoiningPointSet(ww.current_x, ww.current_y, ps)
 				if !ps.HasPoint(ww.current_x - 1, ww.current_y) {
 					next_act_final = append(next_act_final, LEFT)
 				}
 			case RIGHT:
-				ps := NewPointSet()
-				mm.GetJoiningPointSet(ww.current_x, ww.current_y, ps)
 				if !ps.HasPoint(ww.current_x + 1, ww.current_y) {
 					next_act_final = append(next_act_final, RIGHT)
 				}

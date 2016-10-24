@@ -1,3 +1,5 @@
+Life's Path Is a Maze, Not a Straight Line.
+
 Install
 ---------------------------------------
 First because the gomaze draws the maze by the sdl2,you should install go-sdl2 
