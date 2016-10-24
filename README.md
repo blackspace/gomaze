@@ -4,7 +4,7 @@
 
 About Installing
 ---------------------------------------
-First because the gomaze draws the maze by the sdl2,you should install 
+First because the gomaze draws the maze by the sdl2,you should installing 
 go-sdl2 by following the install instructions from the [go-sdl2](https://github.com/veandco/go-sdl2) page.
 
 
