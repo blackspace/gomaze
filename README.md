@@ -17,7 +17,7 @@ To make 100 9x9 mazes:
 go run maze_nxn.go
 ```
 
-Or,to make one 30x30 maze:
+Or,to make one nxn maze:
 
 
 ```

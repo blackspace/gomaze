@@ -9,8 +9,9 @@ func NewPointSet() *PointSet {
 }
 
 func (p *PointSet)Add(x,y int) {
+	temp:=int64(x)<<32+int64(y)
 	if !p.HasPoint(x,y) {
-		p._data =append(p._data,int64(x)<<32+int64(y))
+		p._data =append(p._data,temp)
 	}
 }
 

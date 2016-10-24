@@ -7,10 +7,9 @@ import (
 
 
 func main() {
-	n:=40
-	mm:=maze.BuildMaze(n,0)
+	mm:=maze.BuildMaze(30,0)
 	path:=maze.NewPointStack()
-	mm.FindPath(0,n-1,n-1,0,path)
+	mm.FindPath(0,mm.Len()-1,mm.Len()-1,0,path)
 
 	sdl.Init(sdl.INIT_EVERYTHING)
 
