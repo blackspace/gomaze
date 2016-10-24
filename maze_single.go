@@ -7,7 +7,7 @@ import (
 
 
 func main() {
-	n:=30
+	n:=40
 	mm:=maze.BuildMaze(n,0)
 	path:=maze.NewPointStack()
 	mm.FindPath(0,n-1,n-1,0,path)
