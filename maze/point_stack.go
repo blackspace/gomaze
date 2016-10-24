@@ -3,42 +3,45 @@ package maze
 import "errors"
 
 type PointStack struct {
-	_data []int
+	_data []int64
 }
 
 func NewPointStack() *PointStack {
-	return &PointStack{_data:make([]int,0,1000)}
+	return &PointStack{_data:make([]int64,0,1000)}
 }
 
 
 func (p *PointStack)Push(x,y int) {
-	p._data=append(p._data,x,y)
+	temp:=int64(x)<<32+int64(y)
+	p._data=append(p._data,temp)
 }
 
 func (p *PointStack)Pop() (x,y int) {
-	x=p._data[len(p._data)-2]
-	y=p._data[len(p._data)-1]
-	p._data=p._data[:len(p._data)-2]
-	return
+	temp:=p._data[len(p._data)-1]
+	p._data=p._data[:len(p._data)-1]
+	tx:=temp>>32
+	ty:=temp&0xffffffff
+
+	return int(tx),int(ty)
 }
 
 func (p *PointStack)Last() (x,y int,ok bool){
 	if len(p._data)<2 {
 		return -10000,-10000,false
 	} else {
-		x=p._data[len(p._data)-2]
-		y=p._data[len(p._data)-1]
-		return	x,y,true
+		temp:=p._data[len(p._data)-1]
+		tx:=temp>>32
+		ty:=temp&0xffffffff
+		return	int(tx),int(ty),true
 	}
 
 }
 
 func (p *PointStack)HasPoint(x,y int) bool {
-	for i:=0;i<len(p._data);i=i+2 {
-		px:=p._data[i]
-		py:=p._data[i+1]
+	temp:=int64(x)<<32+int64(y)
+	for i:=0;i<len(p._data);i++ {
 
-		if px==x && py==y {
+		if p._data[i]==temp {
 			return true
 		}
 	}
@@ -47,16 +50,16 @@ func (p *PointStack)HasPoint(x,y int) bool {
 }
 
 func (p *PointStack)Index(i int) (x,y int) {
-	if len(p._data)<2*i+1 {
+	if len(p._data)-1<i {
 		panic(errors.New("i is too bigger"))
 	}
 
-	x=p._data[2*i]
-	y=p._data[2*i+1]
-
-	return
+	temp:=p._data[i]
+	tx:=temp>>32
+	ty:=temp&0xffffffff
+	return	int(tx),int(ty)
 }
 
 func (p *PointStack)Count() int {
-	return len(p._data)/2
+	return len(p._data)
 }
