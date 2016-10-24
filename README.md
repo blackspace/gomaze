@@ -2,7 +2,7 @@
 
 ![a 10x10 maze](https://raw.githubusercontent.com/blackspace/gomaze/master/samples/maze_10x10.png)
 
-Install
+About Installing
 ---------------------------------------
 First because the gomaze draws the maze by the sdl2,you should install 
 go-sdl2 by following the install instructions from the [go-sdl2](https://github.com/veandco/go-sdl2) page.
