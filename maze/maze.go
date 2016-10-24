@@ -38,6 +38,16 @@ func (m *Maze)Get(x,y int) *Cell{
 	return &m.Cells[x][y]
 }
 
+func (m *Maze)Has(x,y int) bool {
+	if x+1>m.Len() || y+1>m.Len() {
+		return false
+	}
+	if x<0 || y<0 {
+		return false
+	}
+	return true
+}
+
 
 func (m *Maze)GetFirstClosedCell() (x,y int,ok bool){
 	for y:=0;y<len(m.Cells);y++ {
@@ -121,22 +131,22 @@ func (m *Maze)IsOpen(x,y,direction int) bool {
 func (m *Maze)GetJoiningPointSet(cx,cy int,ps *PointSet){
 	ps.Add(cx,cy)
 
-	if m.Get(cx,cy-1)!=nil && !ps.HasPoint(cx,cy-1) && m.IsOpen(cx,cy,UP) {
+	if m.Has(cx,cy-1) && m.IsOpen(cx,cy,UP) && !ps.HasPoint(cx,cy-1)  {
 		m.GetJoiningPointSet(cx,cy-1,ps)
 
 	}
 
-	if m.Get(cx,cy+1)!=nil && !ps.HasPoint(cx,cy+1) && m.IsOpen(cx,cy,DOWN) {
+	if m.Has(cx,cy+1) && m.IsOpen(cx,cy,DOWN) && !ps.HasPoint(cx,cy+1)  {
 		m.GetJoiningPointSet(cx,cy+1,ps)
 
 	}
 
-	if m.Get(cx-1,cy)!=nil && !ps.HasPoint(cx-1,cy) && m.IsOpen(cx,cy,LEFT) {
+	if m.Has(cx-1,cy) && m.IsOpen(cx,cy,LEFT) && !ps.HasPoint(cx-1,cy)  {
 		m.GetJoiningPointSet(cx-1,cy,ps)
 
 	}
 
-	if m.Get(cx+1,cy)!=nil && !ps.HasPoint(cx+1,cy) && m.IsOpen(cx,cy,RIGHT) {
+	if m.Has(cx+1,cy) && m.IsOpen(cx,cy,RIGHT) && !ps.HasPoint(cx+1,cy)  {
 		m.GetJoiningPointSet(cx+1,cy,ps)
 	}
 }
