@@ -1,5 +1,6 @@
 *Life's Path Is a Maze, Not a Straight Line.*
 
+![a 10x10 maze](https://raw.githubusercontent.com/blackspace/gomaze/master/samples/maze_10x10.png)
 
 Install
 ---------------------------------------
