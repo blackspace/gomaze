@@ -12,17 +12,15 @@ const (
 type Worm struct {
 	Maze                 * Maze
 	current_x, current_y int
-	PointSet             *PointSet
 }
 
 func NewWorm(m *Maze) *Worm {
-	return &Worm{Maze:m,PointSet:NewPointSet()}
+	return &Worm{Maze:m}
 }
 
 func (w *Worm)GetInMaze(x,y int) {
 	w.current_x =x
 	w.current_y =y
-	w.PointSet.Add(x,y)
 }
 
 func (w *Worm)CurrentPosition() (x,y int) {
@@ -53,8 +51,6 @@ func (w *Worm)Up()  {
 		cell.EraseTop()
 		next_cell.EraseBottom()
 		w.current_y =w.current_y -1
-		w.PointSet.Add(w.current_x,w.current_y -1)
-
 	} else {
 		panic(errors.New("If Up,It will go out the maze"))
 	}
@@ -68,7 +64,6 @@ func (w *Worm)Down()  {
 		cell.EraseBottom()
 		next_cell.EraseTop()
 		w.current_y =w.current_y +1
-		w.PointSet.Add(w.current_x,w.current_y +1)
 	} else {
 		panic(errors.New("If Down,It will go out the maze"))
 	}
@@ -83,7 +78,6 @@ func (w *Worm)Left()  {
 		cell.EraseLeft()
 		next_cell.EraseRight()
 		w.current_x =w.current_x -1
-		w.PointSet.Add(w.current_x -1,w.current_y)
 	} else {
 		panic(errors.New("If Left,It will go out the maze"))
 	}
@@ -98,7 +92,6 @@ func (w *Worm)Right()  {
 		cell.EraseRight()
 		next_cell.EraseLeft()
 		w.current_x =w.current_x +1
-		w.PointSet.Add(w.current_x +1,w.current_y)
 	} else {
 		panic(errors.New("If Right,It will go out the maze"))
 	}
