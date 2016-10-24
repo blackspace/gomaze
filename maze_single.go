@@ -7,6 +7,11 @@ import (
 
 
 func main() {
+	n:=30
+	mm:=maze.BuildMaze(n,0)
+	path:=maze.NewPointStack()
+	mm.FindPath(0,n-1,n-1,0,path)
+
 	sdl.Init(sdl.INIT_EVERYTHING)
 
 	const W=1000
@@ -30,13 +35,10 @@ func main() {
 	defer renderer.Destroy()
 
 	w:=10
-	n:=30
 	renderer.SetDrawColor(0, 0, 0, 255)
 	renderer.Clear()
 
-	mm:=maze.BuildMaze(n,0)
-	path:=maze.NewPointStack()
-	mm.FindPath(0,n-1,n-1,0,path)
+
 
 	renderer.SetDrawColor(200,200,200,255)
 	mm.Draw(renderer,w)
