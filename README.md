@@ -1,4 +1,4 @@
-Life's Path Is a Maze, Not a Straight Line.
+*Life's Path Is a Maze, Not a Straight Line.*
 
 Install
 ---------------------------------------
