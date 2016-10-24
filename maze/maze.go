@@ -242,6 +242,9 @@ func BuildMaze(w int,r int) * Maze {
 	rand_generator := rand.New(rand.NewSource(int64(r)))
 	mm :=NewMaze(w)
 
+	var ps * PointSet
+	var need_reget_joining_point_set bool
+
 
 	RESTART:
 	x,y,ok:=mm.GetFirstClosedCell()
@@ -252,6 +255,8 @@ func BuildMaze(w int,r int) * Maze {
 
 	ww := NewWorm(mm)
 	ww.GetInMaze(x,y)
+
+	need_reget_joining_point_set=true
 
 	for {
 		next_act_0 :=make([]int,0,4)
@@ -272,8 +277,12 @@ func BuildMaze(w int,r int) * Maze {
 			next_act_0 =append(next_act_0,RIGHT)
 		}
 
-		ps := NewPointSet()
-		mm.GetJoiningPointSet(ww.current_x, ww.current_y, ps)
+
+		if need_reget_joining_point_set {
+			ps = NewPointSet()
+			mm.GetJoiningPointSet(ww.current_x, ww.current_y, ps)
+		}
+
 		for _,a:=range next_act_0 {
 			switch a {
 			case UP:
@@ -298,14 +307,35 @@ func BuildMaze(w int,r int) * Maze {
 		if len(next_act_final)!=0 {
 			switch next_act_final[rand_generator.Intn(len(next_act_final))]{
 			case UP:
+				if !(ww.UpCell().IsClosed()) {
+					need_reget_joining_point_set=true
+				} else {
+					need_reget_joining_point_set=false
+				}
 				ww.Up()
 			case DOWN:
+				if !(ww.DownCell().IsClosed()) {
+					need_reget_joining_point_set=true
+				} else {
+					need_reget_joining_point_set=false
+				}
 				ww.Down()
 			case LEFT:
+				if !(ww.LeftCell().IsClosed()) {
+					need_reget_joining_point_set=true
+				} else {
+					need_reget_joining_point_set=false
+				}
 				ww.Left()
 			case RIGHT:
+				if !(ww.RightCell().IsClosed()) {
+					need_reget_joining_point_set=true
+				} else {
+					need_reget_joining_point_set=false
+				}
 				ww.Right()
 			}
+			ps.Add(ww.current_x, ww.current_y)
 		} else {
 			goto RESTART
 		}
