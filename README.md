@@ -24,3 +24,7 @@ Or,to make one nxn maze:
 ```
 go run maze_single.go
 ```
+
+Optimization
+----------------------------------------
+I am interested in how to optimize the code,if you know it,Please tell me.
