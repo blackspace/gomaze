@@ -18,7 +18,7 @@ func BenchmarkMakeMazeArea(b *testing.B) {
 }
 
 func TestMazeArea(t *testing.T) {
-	for i:=4;i<30;i++{
+	for i:=30;i<50;i++{
 		m := BuildMaze(i, 0)
 		ma := BuildMazeArea(i, 0)
 
