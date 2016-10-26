@@ -30,14 +30,5 @@ func (a *Area)AddArea(ps *PointSet) {
 	a.PointSets=append(a.PointSets,ps)
 }
 
-func (a *Area)HasPoint(x,y int) bool {
-	for i:=0;i<len(a.PointSets);i++ {
-		if a.PointSets[i].HasPoint(x,y) {
-			return true
-		}
-	}
-	return false
-}
-
 
 
