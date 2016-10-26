@@ -26,3 +26,16 @@ func (p *PointSet)HasPoint(x,y int) bool {
 
 	return false
 }
+
+func (p *PointSet)Index(i int) (x,y int) {
+	temp:=p._data[i]
+
+	x=int(temp>>32)
+	y=int(temp&0xffffffff)
+
+	return
+}
+
+func (p *PointSet)Count() int {
+	return len(p._data)
+}

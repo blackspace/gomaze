@@ -365,8 +365,11 @@ func BuildMazeArea(w int,r int) * Maze {
 	rand_generator := rand.New(rand.NewSource(int64(r)))
 	mm :=NewMaze(w)
 
+	areas:=make([]*PointSet,0,100)
+
+
 	var ps * PointSet
-	var need_reget_joining_point_set bool
+	var need_merge_point_set bool
 
 
 	RESTART:
@@ -379,9 +382,15 @@ func BuildMazeArea(w int,r int) * Maze {
 	ww := NewWorm(mm)
 	ww.GetInMaze(x,y)
 
-	need_reget_joining_point_set=true
+	ps=nil
 
 	for {
+		if ps==nil {
+			ps = NewPointSet()
+			ps.Add(ww.current_x, ww.current_y)
+			need_merge_point_set =false
+		}
+
 		next_act_0 :=make([]int,0,4)
 		next_act_final :=make([]int,0,4)
 		if ww.UpCell()!=nil && !mm.IsOpen(ww.current_x,ww.current_y,UP) {
@@ -401,9 +410,28 @@ func BuildMazeArea(w int,r int) * Maze {
 		}
 
 
-		if need_reget_joining_point_set {
-			ps = NewPointSet()
-			mm.GetJoiningPointSet(ww.current_x, ww.current_y, ps)
+		if need_merge_point_set {
+			is_found :=false
+			var index int
+			for i:=0;i<len(areas);i++ {
+				if areas[i].HasPoint(ww.current_x,ww.current_y) {
+					index=i
+					is_found =true
+					break
+				}
+			}
+
+			if is_found {
+				for i:=0;i<ps.Count();i++ {
+					x,y:=ps.Index(i)
+					areas[index].Add(x,y)
+				}
+
+				ps=areas[index]
+			} else {
+				panic("Want join a area but Cant find any area")
+			}
+
 		}
 
 		for _,a:=range next_act_0 {
@@ -431,36 +459,49 @@ func BuildMazeArea(w int,r int) * Maze {
 			switch next_act_final[rand_generator.Intn(len(next_act_final))]{
 			case UP:
 				if !(ww.UpCell().IsClosed()) {
-					need_reget_joining_point_set=true
+					need_merge_point_set =true
 				} else {
-					need_reget_joining_point_set=false
+					need_merge_point_set =false
 				}
 				ww.Up()
 			case DOWN:
 				if !(ww.DownCell().IsClosed()) {
-					need_reget_joining_point_set=true
+					need_merge_point_set =true
 				} else {
-					need_reget_joining_point_set=false
+					need_merge_point_set =false
 				}
 				ww.Down()
 			case LEFT:
 				if !(ww.LeftCell().IsClosed()) {
-					need_reget_joining_point_set=true
+					need_merge_point_set =true
 				} else {
-					need_reget_joining_point_set=false
+					need_merge_point_set =false
 				}
 				ww.Left()
 			case RIGHT:
 				if !(ww.RightCell().IsClosed()) {
-					need_reget_joining_point_set=true
+					need_merge_point_set =true
 				} else {
-					need_reget_joining_point_set=false
+					need_merge_point_set =false
 				}
 				ww.Right()
 			}
 			ps.Add(ww.current_x, ww.current_y)
 		} else {
+			var is_found bool
+			for i:=0;i<len(areas);i++ {
+				if ps==areas[i] {
+					is_found=true
+					break
+				}
+			}
+
+			if !is_found {
+				areas=append(areas,ps)
+			}
+
 			goto RESTART
+
 		}
 	}
 
