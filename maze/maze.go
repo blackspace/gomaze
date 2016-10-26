@@ -421,7 +421,7 @@ func BuildMazeArea(w int,r int) * Maze {
 			}
 
 			if len(found_area)==0 {
-				panic("Want join a area but Cant find any area")
+				panic("Want merge a area but Cant find any area")
 			}
 
 			if len(found_area)==1 {
