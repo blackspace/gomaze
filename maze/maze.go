@@ -365,7 +365,7 @@ func BuildMazeArea(w int,r int) * Maze {
 	rand_generator := rand.New(rand.NewSource(int64(r)))
 	mm :=NewMaze(w)
 
-	areas:=make([]*PointSet,0,100)
+	areas:=make([]*PointSet,0,1<<10)
 
 
 	var ps * PointSet
@@ -412,11 +412,11 @@ func BuildMazeArea(w int,r int) * Maze {
 
 		if need_merge_point_set {
 			is_found :=false
-			var index int
+			index:=0
 			for i:=0;i<len(areas);i++ {
 				if areas[i].HasPoint(ww.current_x,ww.current_y) {
 					index=i
-					is_found =true
+					is_found = true
 					break
 				}
 			}
