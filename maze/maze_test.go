@@ -1,6 +1,10 @@
 package maze
 
-import "testing"
+import (
+	"testing"
+	"log"
+	"sync"
+)
 
 func BenchmarkMakeMaze(b *testing.B) {
 	for i:=0;i<b.N;i++ {
@@ -15,10 +19,29 @@ func BenchmarkMakeMazeArea(b *testing.B) {
 }
 
 func TestMazeArea(t *testing.T) {
-	m:=BuildMaze(40,0)
-	ma:=BuildMazeArea(40,0)
+
+	var m *Maze
+	var ma *Maze
+
+	var wg sync.WaitGroup
+	wg.Add(2)
+
+	go func() {
+		m = BuildMaze(100, 0)
+		wg.Done()
+	}()
+
+	go func() {
+		ma = BuildMazeArea(100, 0)
+		wg.Done()
+	}()
+
+	wg.Wait()
 
 	if !m.Equal(ma) {
 		t.Failed()
 	}
+
+
 }
+

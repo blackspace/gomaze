@@ -7,7 +7,7 @@ import (
 
 
 func main() {
-	mm:=maze.BuildMazeArea(40,0)
+	mm:=maze.BuildMazeArea(100,0)
 	path:=maze.NewPointStack()
 	mm.FindPath(0,mm.Len()-1,mm.Len()-1,0,path)
 
@@ -33,7 +33,7 @@ func main() {
 	}
 	defer renderer.Destroy()
 
-	w:=10
+	w:=5
 	renderer.SetDrawColor(0, 0, 0, 255)
 	renderer.Clear()
 

@@ -498,7 +498,7 @@ func BuildMazeArea(w int,r int) * Maze {
 				ps.Add(ww.current_x,ww.current_y)
 			}
 		} else {
-			var is_found bool
+			is_found:=false
 			for i:=0;i<len(areas);i++ {
 				if ps==areas[i] {
 					is_found=true
