@@ -238,6 +238,22 @@ func (m *Maze)FindPath(x0,y0,x1,y1 int,path * PointStack)  {
 	return
 }
 
+func (m *Maze)Equal(m0 *Maze) bool {
+	if m.Len()!=m0.Len() {
+		return false
+	}
+
+	for y:=0;y<m.Len();y++ {
+		for x:=0;x<m.Len();x++ {
+			if m.Cells[x][y]!=m0.Cells[x][y] {
+				return false
+			}
+		}
+	}
+
+	return true
+}
+
 func BuildMaze(w int,r int) * Maze {
 	rand_generator := rand.New(rand.NewSource(int64(r)))
 	mm :=NewMaze(w)
@@ -344,5 +360,111 @@ func BuildMaze(w int,r int) * Maze {
 	return mm
 }
 
+
+func BuildMazeArea(w int,r int) * Maze {
+	rand_generator := rand.New(rand.NewSource(int64(r)))
+	mm :=NewMaze(w)
+
+	var ps * PointSet
+	var need_reget_joining_point_set bool
+
+
+	RESTART:
+	x,y,ok:=mm.GetFirstClosedCell()
+
+	if !ok {
+		return mm
+	}
+
+	ww := NewWorm(mm)
+	ww.GetInMaze(x,y)
+
+	need_reget_joining_point_set=true
+
+	for {
+		next_act_0 :=make([]int,0,4)
+		next_act_final :=make([]int,0,4)
+		if ww.UpCell()!=nil && !mm.IsOpen(ww.current_x,ww.current_y,UP) {
+			next_act_0 =append(next_act_0,UP)
+		}
+
+		if ww.DownCell()!=nil && !mm.IsOpen(ww.current_x,ww.current_y,DOWN) {
+			next_act_0 =append(next_act_0,DOWN)
+		}
+
+		if ww.LeftCell()!=nil && !mm.IsOpen(ww.current_x,ww.current_y,LEFT)  {
+			next_act_0 =append(next_act_0,LEFT)
+		}
+
+		if ww.RightCell()!=nil && !mm.IsOpen(ww.current_x,ww.current_y,RIGHT) {
+			next_act_0 =append(next_act_0,RIGHT)
+		}
+
+
+		if need_reget_joining_point_set {
+			ps = NewPointSet()
+			mm.GetJoiningPointSet(ww.current_x, ww.current_y, ps)
+		}
+
+		for _,a:=range next_act_0 {
+			switch a {
+			case UP:
+				if !ps.HasPoint(ww.current_x, ww.current_y - 1) {
+					next_act_final = append(next_act_final, UP)
+				}
+			case DOWN:
+				if !ps.HasPoint(ww.current_x, ww.current_y + 1) {
+					next_act_final = append(next_act_final, DOWN)
+				}
+			case LEFT:
+				if !ps.HasPoint(ww.current_x - 1, ww.current_y) {
+					next_act_final = append(next_act_final, LEFT)
+				}
+			case RIGHT:
+				if !ps.HasPoint(ww.current_x + 1, ww.current_y) {
+					next_act_final = append(next_act_final, RIGHT)
+				}
+			}
+		}
+
+		if len(next_act_final)!=0 {
+			switch next_act_final[rand_generator.Intn(len(next_act_final))]{
+			case UP:
+				if !(ww.UpCell().IsClosed()) {
+					need_reget_joining_point_set=true
+				} else {
+					need_reget_joining_point_set=false
+				}
+				ww.Up()
+			case DOWN:
+				if !(ww.DownCell().IsClosed()) {
+					need_reget_joining_point_set=true
+				} else {
+					need_reget_joining_point_set=false
+				}
+				ww.Down()
+			case LEFT:
+				if !(ww.LeftCell().IsClosed()) {
+					need_reget_joining_point_set=true
+				} else {
+					need_reget_joining_point_set=false
+				}
+				ww.Left()
+			case RIGHT:
+				if !(ww.RightCell().IsClosed()) {
+					need_reget_joining_point_set=true
+				} else {
+					need_reget_joining_point_set=false
+				}
+				ww.Right()
+			}
+			ps.Add(ww.current_x, ww.current_y)
+		} else {
+			goto RESTART
+		}
+	}
+
+	return mm
+}
 
 
