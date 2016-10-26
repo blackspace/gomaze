@@ -36,7 +36,7 @@ func main() {
 	renderer.Clear()
 
 	for i:=0;i<100;i++ {
-		mm:=maze.BuildMaze(n,i)
+		mm:=maze.BuildMazeArea(n,i)
 		path:=maze.NewPointStack()
 		mm.FindPath(0,n-1,n-1,0,path)
 

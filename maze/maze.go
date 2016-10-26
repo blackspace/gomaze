@@ -383,12 +383,12 @@ func BuildMazeArea(w int,r int) * Maze {
 	ww.GetInMaze(x,y)
 
 	ps=nil
+	need_merge_point_set = false
 
 	for {
 		if ps==nil {
 			ps = NewPointSet()
 			ps.Add(ww.current_x, ww.current_y)
-			need_merge_point_set =false
 		}
 
 		next_act_0 :=make([]int,0,4)
@@ -456,37 +456,43 @@ func BuildMazeArea(w int,r int) * Maze {
 		}
 
 		if len(next_act_final)!=0 {
+			need_add_point:=false
 			switch next_act_final[rand_generator.Intn(len(next_act_final))]{
 			case UP:
-				if !(ww.UpCell().IsClosed()) {
+				if !ww.UpCell().IsClosed() {
 					need_merge_point_set =true
 				} else {
-					need_merge_point_set =false
+					need_add_point=true
 				}
 				ww.Up()
+
 			case DOWN:
-				if !(ww.DownCell().IsClosed()) {
+				if !ww.DownCell().IsClosed() {
 					need_merge_point_set =true
 				} else {
-					need_merge_point_set =false
+					need_add_point=true
 				}
 				ww.Down()
 			case LEFT:
-				if !(ww.LeftCell().IsClosed()) {
+				if !ww.LeftCell().IsClosed() {
 					need_merge_point_set =true
 				} else {
-					need_merge_point_set =false
+					need_add_point=true
 				}
 				ww.Left()
+
 			case RIGHT:
-				if !(ww.RightCell().IsClosed()) {
+				if !ww.RightCell().IsClosed() {
 					need_merge_point_set =true
-				} else {
-					need_merge_point_set =false
+				}  else {
+					need_add_point=true
 				}
 				ww.Right()
 			}
-			ps.Add(ww.current_x, ww.current_y)
+
+			if need_add_point {
+				ps.Add(ww.current_x,ww.current_y)
+			}
 		} else {
 			var is_found bool
 			for i:=0;i<len(areas);i++ {

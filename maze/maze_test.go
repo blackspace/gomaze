@@ -15,8 +15,8 @@ func BenchmarkMakeMazeArea(b *testing.B) {
 }
 
 func TestMazeArea(t *testing.T) {
-	m:=BuildMaze(20,0)
-	ma:=BuildMazeArea(20,0)
+	m:=BuildMaze(40,0)
+	ma:=BuildMazeArea(40,0)
 
 	if !m.Equal(ma) {
 		t.Fail()
