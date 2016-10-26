@@ -369,8 +369,6 @@ func BuildMazeArea(w int,r int) * Maze {
 
 
 	var ps * PointSet
-	var need_merge_point_set bool
-
 
 	RESTART:
 	x,y,ok:=mm.GetFirstClosedCell()
@@ -384,7 +382,6 @@ func BuildMazeArea(w int,r int) * Maze {
 
 
 	ps=nil
-	need_merge_point_set = false
 
 	for {
 		if ps==nil {
@@ -411,19 +408,6 @@ func BuildMazeArea(w int,r int) * Maze {
 		}
 
 
-		if need_merge_point_set {
-			if a:=areas.FindByPoint(ww.current_x,ww.current_y);a!=nil {
-				for i:=0;i<ps.Count();i++ {
-					x,y:=ps.Index(i)
-					a.Add(x,y)
-				}
-
-				ps=a
-			} else {
-				panic("Want merge a area but Cant find any area")
-			}
-		}
-
 		for _,a:=range next_act_0 {
 			switch a {
 			case UP:
@@ -446,13 +430,13 @@ func BuildMazeArea(w int,r int) * Maze {
 		}
 
 		if len(next_act_final)!=0 {
-			need_add_point:=false
+			need_merge_point_set :=false
+
 			switch next_act_final[rand_generator.Intn(len(next_act_final))]{
 			case UP:
 				if !ww.UpCell().IsClosed() {
 					need_merge_point_set =true
 				} else {
-					need_add_point=true
 					need_merge_point_set =false
 				}
 				ww.Up()
@@ -461,7 +445,6 @@ func BuildMazeArea(w int,r int) * Maze {
 				if !ww.DownCell().IsClosed() {
 					need_merge_point_set =true
 				} else {
-					need_add_point=true
 					need_merge_point_set =false
 				}
 				ww.Down()
@@ -469,7 +452,6 @@ func BuildMazeArea(w int,r int) * Maze {
 				if !ww.LeftCell().IsClosed() {
 					need_merge_point_set =true
 				} else {
-					need_add_point=true
 					need_merge_point_set =false
 				}
 				ww.Left()
@@ -478,15 +460,26 @@ func BuildMazeArea(w int,r int) * Maze {
 				if !ww.RightCell().IsClosed() {
 					need_merge_point_set =true
 				}  else {
-					need_add_point=true
 					need_merge_point_set =false
 				}
 				ww.Right()
 			}
 
-			if need_add_point {
+			if need_merge_point_set {
+				if a:=areas.FindByPoint(ww.current_x,ww.current_y);a!=nil {
+					for i:=0;i<ps.Count();i++ {
+						x,y:=ps.Index(i)
+						a.Add(x,y)
+					}
+
+					ps=a
+				} else {
+					panic("Want merge a area but Cant find any area")
+				}
+			} else  {
 				ps.Add(ww.current_x,ww.current_y)
 			}
+
 		} else {
 			if !areas.HasArea(ps) {
 				areas.AddArea(ps)
