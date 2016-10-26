@@ -19,6 +19,6 @@ func TestMazeArea(t *testing.T) {
 	ma:=BuildMazeArea(40,0)
 
 	if !m.Equal(ma) {
-		t.Fail()
+		t.Failed()
 	}
 }

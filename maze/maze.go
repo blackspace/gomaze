@@ -463,6 +463,7 @@ func BuildMazeArea(w int,r int) * Maze {
 					need_merge_point_set =true
 				} else {
 					need_add_point=true
+					need_merge_point_set =false
 				}
 				ww.Up()
 
@@ -471,6 +472,7 @@ func BuildMazeArea(w int,r int) * Maze {
 					need_merge_point_set =true
 				} else {
 					need_add_point=true
+					need_merge_point_set =false
 				}
 				ww.Down()
 			case LEFT:
@@ -478,6 +480,7 @@ func BuildMazeArea(w int,r int) * Maze {
 					need_merge_point_set =true
 				} else {
 					need_add_point=true
+					need_merge_point_set =false
 				}
 				ww.Left()
 
@@ -486,6 +489,7 @@ func BuildMazeArea(w int,r int) * Maze {
 					need_merge_point_set =true
 				}  else {
 					need_add_point=true
+					need_merge_point_set =false
 				}
 				ww.Right()
 			}
