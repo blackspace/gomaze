@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/veandco/go-sdl2/sdl"
 	"math/rand"
-	"log"
 )
 
 type Maze struct {
@@ -366,7 +365,7 @@ func BuildMazeArea(w int,r int) * Maze {
 	rand_generator := rand.New(rand.NewSource(int64(r)))
 	mm :=NewMaze(w)
 
-	areas:=make([]*PointSet,0,1<<10)
+	areas:=NewArea()
 
 
 	var ps * PointSet
@@ -382,6 +381,7 @@ func BuildMazeArea(w int,r int) * Maze {
 
 	ww := NewWorm(mm)
 	ww.GetInMaze(x,y)
+
 
 	ps=nil
 	need_merge_point_set = false
@@ -412,33 +412,15 @@ func BuildMazeArea(w int,r int) * Maze {
 
 
 		if need_merge_point_set {
-			found_area:=make([]int,0,10)
-			index:=0
-			for i:=0;i<len(areas);i++ {
-				if areas[i].HasPoint(ww.current_x,ww.current_y) {
-					found_area=append(found_area,i)
-				}
-			}
-
-			if len(found_area)==0 {
-				panic("Want merge a area but Cant find any area")
-			}
-
-			if len(found_area)==1 {
+			if a:=areas.FindByPoint(ww.current_x,ww.current_y);a!=nil {
 				for i:=0;i<ps.Count();i++ {
 					x,y:=ps.Index(i)
-					areas[index].Add(x,y)
+					a.Add(x,y)
 				}
 
-				ps=areas[index]
-			}
-
-			if len(found_area)>1{
-				log.Println(ps)
-				for _,a:=range found_area {
-					log.Println(a)
-				}
-				panic("Find too many area can be merge")
+				ps=a
+			} else {
+				panic("Want merge a area but Cant find any area")
 			}
 		}
 
@@ -506,16 +488,8 @@ func BuildMazeArea(w int,r int) * Maze {
 				ps.Add(ww.current_x,ww.current_y)
 			}
 		} else {
-			is_found:=false
-			for i:=0;i<len(areas);i++ {
-				if ps==areas[i] {
-					is_found=true
-					break
-				}
-			}
-
-			if !is_found {
-				areas=append(areas,ps)
+			if !areas.HasArea(ps) {
+				areas.AddArea(ps)
 			}
 
 			goto RESTART
