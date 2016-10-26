@@ -436,31 +436,23 @@ func BuildMazeArea(w int,r int) * Maze {
 			case UP:
 				if !ww.UpCell().IsClosed() {
 					need_merge_point_set =true
-				} else {
-					need_merge_point_set =false
 				}
 				ww.Up()
 
 			case DOWN:
 				if !ww.DownCell().IsClosed() {
 					need_merge_point_set =true
-				} else {
-					need_merge_point_set =false
 				}
 				ww.Down()
 			case LEFT:
 				if !ww.LeftCell().IsClosed() {
 					need_merge_point_set =true
-				} else {
-					need_merge_point_set =false
 				}
 				ww.Left()
 
 			case RIGHT:
 				if !ww.RightCell().IsClosed() {
 					need_merge_point_set =true
-				}  else {
-					need_merge_point_set =false
 				}
 				ww.Right()
 			}
