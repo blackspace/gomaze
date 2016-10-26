@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/veandco/go-sdl2/sdl"
 	"math/rand"
+	"log"
 )
 
 type Maze struct {
@@ -411,27 +412,34 @@ func BuildMazeArea(w int,r int) * Maze {
 
 
 		if need_merge_point_set {
-			is_found :=false
+			found_area:=make([]int,0,10)
 			index:=0
 			for i:=0;i<len(areas);i++ {
 				if areas[i].HasPoint(ww.current_x,ww.current_y) {
-					index=i
-					is_found = true
-					break
+					found_area=append(found_area,i)
 				}
 			}
 
-			if is_found {
+			if len(found_area)==0 {
+				panic("Want join a area but Cant find any area")
+			}
+
+			if len(found_area)==1 {
 				for i:=0;i<ps.Count();i++ {
 					x,y:=ps.Index(i)
 					areas[index].Add(x,y)
 				}
 
 				ps=areas[index]
-			} else {
-				panic("Want join a area but Cant find any area")
 			}
 
+			if len(found_area)>1{
+				log.Println(ps)
+				for _,a:=range found_area {
+					log.Println(a)
+				}
+				panic("Find too many area can be merge")
+			}
 		}
 
 		for _,a:=range next_act_0 {
