@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/veandco/go-sdl2/sdl"
 	"math/rand"
-	"log"
 )
 
 type Maze struct {
@@ -255,12 +254,12 @@ func (m *Maze)Equal(m0 *Maze) bool {
 	return true
 }
 
-
 func BuildMaze(w int,r int) * Maze {
 	rand_generator := rand.New(rand.NewSource(int64(r)))
 	mm :=NewMaze(w)
 
 	areas:=NewArea()
+
 
 	var ps * PointSet
 
@@ -345,13 +344,18 @@ func BuildMaze(w int,r int) * Maze {
 			case RIGHT:
 				if !ww.RightCell().IsClosed() {
 					need_merge_point_set =true
-		}
+				}
 				ww.Right()
 			}
 
 			if need_merge_point_set {
 				if a:=areas.FindByPoint(ww.current_x,ww.current_y);a!=nil {
 					a.Join(ps)
+
+					if areas.HasArea(ps) {
+						areas.Remove(ps)
+					}
+
 					ps=a
 				} else {
 					panic("Want merge a area but Cant find any area")
@@ -370,10 +374,8 @@ func BuildMaze(w int,r int) * Maze {
 		}
 	}
 
-	log.Println(len(areas.PointSets))
 
 	return mm
 }
-
 
 
