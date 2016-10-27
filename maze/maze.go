@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/veandco/go-sdl2/sdl"
 	"math/rand"
+	"log"
 )
 
 type Maze struct {
@@ -272,6 +273,8 @@ func BuildMaze(w int,r int) * Maze {
 	ww := NewWorm(mm)
 	ww.GetInMaze(x,y)
 
+	log.Println(x,y)
+
 	need_reget_joining_point_set=true
 
 	for {
@@ -380,6 +383,8 @@ func BuildMazeArea(w int,r int) * Maze {
 	ww := NewWorm(mm)
 	ww.GetInMaze(x,y)
 
+	log.Println(x,y)
+
 
 	ps=nil
 
@@ -481,6 +486,8 @@ func BuildMazeArea(w int,r int) * Maze {
 
 		}
 	}
+
+	log.Println(len(areas.PointSets))
 
 	return mm
 }
