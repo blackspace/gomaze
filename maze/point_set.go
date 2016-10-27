@@ -39,3 +39,10 @@ func (p *PointSet)Index(i int) (x,y int) {
 func (p *PointSet)Count() int {
 	return len(p._data)
 }
+
+func (p *PointSet)Join(jp *PointSet) {
+	for i:=0;i<jp.Count();i++ {
+		x,y:=jp.Index(i)
+		p.Add(x,y)
+	}
+}

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/veandco/go-sdl2/sdl"
 	"math/rand"
+	"log"
 )
 
 type Maze struct {
@@ -254,16 +255,14 @@ func (m *Maze)Equal(m0 *Maze) bool {
 	return true
 }
 
+
 func BuildMaze(w int,r int) * Maze {
 	rand_generator := rand.New(rand.NewSource(int64(r)))
 	mm :=NewMaze(w)
 
-	areas:=make([]*PointSet,0,100)
-
+	areas:=NewArea()
 
 	var ps * PointSet
-	var need_merge_point_set bool
-
 
 	RESTART:
 	x,y,ok:=mm.GetFirstClosedCell()
@@ -276,7 +275,6 @@ func BuildMaze(w int,r int) * Maze {
 	ww.GetInMaze(x,y)
 
 	ps=nil
-	need_merge_point_set = false
 
 	for {
 		if ps==nil {
@@ -303,30 +301,6 @@ func BuildMaze(w int,r int) * Maze {
 		}
 
 
-		if need_merge_point_set {
-			is_found :=false
-			var index int
-			for i:=0;i<len(areas);i++ {
-				if areas[i].HasPoint(ww.current_x,ww.current_y) {
-					index=i
-					is_found =true
-					break
-				}
-			}
-
-			if is_found {
-				for i:=0;i<ps.Count();i++ {
-					x,y:=ps.Index(i)
-					areas[index].Add(x,y)
-				}
-
-				ps=areas[index]
-			} else {
-				panic("Want join a area but Cant find any area")
-			}
-
-		}
-
 		for _,a:=range next_act_0 {
 			switch a {
 			case UP:
@@ -349,64 +323,54 @@ func BuildMaze(w int,r int) * Maze {
 		}
 
 		if len(next_act_final)!=0 {
-			need_add_point:=false
+			need_merge_point_set :=false
 			switch next_act_final[rand_generator.Intn(len(next_act_final))]{
 			case UP:
 				if !ww.UpCell().IsClosed() {
 					need_merge_point_set =true
-				} else {
-					need_add_point=true
-					need_merge_point_set =false
 				}
 				ww.Up()
 
 			case DOWN:
 				if !ww.DownCell().IsClosed() {
 					need_merge_point_set =true
-				} else {
-					need_add_point=true
-					need_merge_point_set =false
 				}
 				ww.Down()
 			case LEFT:
 				if !ww.LeftCell().IsClosed() {
 					need_merge_point_set =true
-				} else {
-					need_add_point=true
-					need_merge_point_set = false
 				}
 				ww.Left()
 
 			case RIGHT:
 				if !ww.RightCell().IsClosed() {
 					need_merge_point_set =true
-				}  else {
-					need_add_point=true
-					need_merge_point_set = false
-				}
+		}
 				ww.Right()
 			}
 
-			if need_add_point {
+			if need_merge_point_set {
+				if a:=areas.FindByPoint(ww.current_x,ww.current_y);a!=nil {
+					a.Join(ps)
+					ps=a
+				} else {
+					panic("Want merge a area but Cant find any area")
+				}
+			} else  {
 				ps.Add(ww.current_x,ww.current_y)
 			}
-		} else {
-			var is_found bool
-			for i:=0;i<len(areas);i++ {
-				if ps==areas[i] {
-					is_found=true
-					break
-				}
-			}
 
-			if !is_found {
-				areas=append(areas,ps)
+		} else {
+			if !areas.HasArea(ps) {
+				areas.AddArea(ps)
 			}
 
 			goto RESTART
 
 		}
 	}
+
+	log.Println(len(areas.PointSets))
 
 	return mm
 }
