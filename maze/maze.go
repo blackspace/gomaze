@@ -273,8 +273,6 @@ func BuildMaze(w int,r int) * Maze {
 	ww := NewWorm(mm)
 	ww.GetInMaze(x,y)
 
-	log.Println(x,y)
-
 	need_reget_joining_point_set=true
 
 	for {
@@ -383,9 +381,6 @@ func BuildMazeArea(w int,r int) * Maze {
 	ww := NewWorm(mm)
 	ww.GetInMaze(x,y)
 
-	log.Println(x,y)
-
-
 	ps=nil
 
 	for {
@@ -436,7 +431,6 @@ func BuildMazeArea(w int,r int) * Maze {
 
 		if len(next_act_final)!=0 {
 			need_merge_point_set :=false
-
 			switch next_act_final[rand_generator.Intn(len(next_act_final))]{
 			case UP:
 				if !ww.UpCell().IsClosed() {
@@ -464,11 +458,7 @@ func BuildMazeArea(w int,r int) * Maze {
 
 			if need_merge_point_set {
 				if a:=areas.FindByPoint(ww.current_x,ww.current_y);a!=nil {
-					for i:=0;i<ps.Count();i++ {
-						x,y:=ps.Index(i)
-						a.Add(x,y)
-					}
-
+					a.Join(ps)
 					ps=a
 				} else {
 					panic("Want merge a area but Cant find any area")
