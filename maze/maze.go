@@ -203,7 +203,7 @@ func (m *Maze)FindPath(x0,y0,x1,y1 int,path * PointStack)  {
 	if m.Get(x0,y0-1)!=nil&&m.IsOpen(x0,y0,UP)&&!path.HasPoint(x0,y0-1) {
 		m.FindPath(x0,y0-1,x1,y1,path)
 
-		if lx,ly,ok:=path.Last(); ok && lx==x1 && ly==y1 {
+		if lx,ly,ok:=path.Peek(); ok && lx==x1 && ly==y1 {
 			return
 		}
 
@@ -211,7 +211,7 @@ func (m *Maze)FindPath(x0,y0,x1,y1 int,path * PointStack)  {
 	if m.Get(x0,y0+1)!=nil&&m.IsOpen(x0,y0,DOWN)&&!path.HasPoint(x0,y0+1) {
 		m.FindPath(x0,y0+1,x1,y1,path)
 
-		if lx,ly,ok:=path.Last(); ok &&lx==x1 && ly==y1 {
+		if lx,ly,ok:=path.Peek(); ok &&lx==x1 && ly==y1 {
 			return
 		}
 
@@ -219,7 +219,7 @@ func (m *Maze)FindPath(x0,y0,x1,y1 int,path * PointStack)  {
 	if m.Get(x0+1,y0)!=nil&&m.IsOpen(x0,y0,RIGHT)&&!path.HasPoint(x0+1,y0) {
 		m.FindPath(x0+1,y0,x1,y1,path)
 
-		if lx,ly,ok:=path.Last();ok && lx==x1 && ly==y1 {
+		if lx,ly,ok:=path.Peek();ok && lx==x1 && ly==y1 {
 			return
 		}
 
@@ -227,7 +227,7 @@ func (m *Maze)FindPath(x0,y0,x1,y1 int,path * PointStack)  {
 	if m.Get(x0-1,y0)!=nil&&m.IsOpen(x0,y0,LEFT)&&!path.HasPoint(x0-1,y0){
 		m.FindPath(x0-1,y0,x1,y1,path)
 
-		if lx,ly,ok:=path.Last(); ok &&lx==x1 && ly==y1 {
+		if lx,ly,ok:=path.Peek(); ok &&lx==x1 && ly==y1 {
 			return
 		}
 

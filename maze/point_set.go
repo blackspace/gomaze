@@ -25,7 +25,7 @@ func (p *PointSet)HasPoint(x,y int) bool {
 }
 
 
-func (p *PointSet)Count() int {
+func (p *PointSet)Size() int {
 	return p._data.Size()
 }
 

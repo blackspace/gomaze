@@ -21,17 +21,15 @@ func (p *PointStack)Push(x,y int) {
 func (p *PointStack)Pop() (x,y int) {
 	if v,ok:=p._data.Pop();ok{
 		x,y= Int64ToXY(v.(int64))
-
 		return
 	} else {
 		panic("This point stack is empty.")
 	}
 }
 
-func (p *PointStack)Last() (x,y int,ok bool){
+func (p *PointStack)Peek() (x,y int,ok bool){
 	v,ok:=p._data.Peek()
 	x,y= Int64ToXY(v.(int64))
-
 	return
 }
 
