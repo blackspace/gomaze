@@ -1,25 +1,25 @@
 package maze
 
 type Area struct {
-	PointSets []*PointSet
+	_pointSets []*PointSet
 }
 
 func NewArea() *Area{
-	return &Area{PointSets:make([]*PointSet,0,1<<10)}
+	return &Area{_pointSets:make([]*PointSet,0,1<<10)}
 }
 
 func (a *Area)FindByPoint(x,y int) *PointSet {
-	for i:=0;i<len(a.PointSets);i++ {
-		if a.PointSets[i].HasPoint(x,y) {
-			return a.PointSets[i]
+	for i:=0;i<len(a._pointSets);i++ {
+		if a._pointSets[i].HasPoint(x,y) {
+			return a._pointSets[i]
 		}
 	}
 	return nil
 }
 
 func (a *Area)HasArea(ps *PointSet) bool {
-	for i:=0;i<len(a.PointSets);i++ {
-		if ps==a.PointSets[i] {
+	for i:=0;i<len(a._pointSets);i++ {
+		if ps==a._pointSets[i] {
 			return true
 		}
 	}
@@ -27,26 +27,26 @@ func (a *Area)HasArea(ps *PointSet) bool {
 }
 
 func (a *Area)AddArea(ps *PointSet) {
-	a.PointSets=append(a.PointSets,ps)
+	a._pointSets =append(a._pointSets,ps)
 }
 
-func (a *Area)Remove(ps *PointSet) {
+func (a *Area)RemoveArea(ps *PointSet) {
 	var index int
 
-	for index=0;index<a.Count();index++{
-		if a.PointSets[index]==ps {
+	for index=0;index<a.Size();index++{
+		if a._pointSets[index]==ps {
 			break
 		}
 	}
 
-	start:=a.PointSets[:index]
-	end:=a.PointSets[index+1:]
+	start:=a._pointSets[:index]
+	end:=a._pointSets[index+1:]
 
-	a.PointSets=append(start,end...)
+	a._pointSets =append(start,end...)
 }
 
-func (a *Area)Count() int {
-	return len(a.PointSets)
+func (a *Area)Size() int {
+	return len(a._pointSets)
 }
 
 

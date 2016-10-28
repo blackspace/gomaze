@@ -49,7 +49,7 @@ func (m *Maze)Has(x,y int) bool {
 }
 
 
-func (m *Maze)GetFirstClosedCell() (x,y int,ok bool){
+func (m *Maze)GetFirstClosedCell() (int,int,bool){
 	for y:=0;y<len(m.Cells);y++ {
 		for x:=0;x<len(m.Cells);x++ {
 			cell:=m.Get(x,y)
@@ -59,14 +59,14 @@ func (m *Maze)GetFirstClosedCell() (x,y int,ok bool){
 		}
 	}
 
-	return
+	return -1,-1,false
 }
 
-func (m *Maze)LeftBottom() (x,y int) {
+func (m *Maze)LeftBottom() int {
 	return 0,m.Len()-1
 }
 
-func (m *Maze)RightTop() (x,y int) {
+func (m *Maze)RightTop() (int,int) {
 	return m.Len()-1,0
 }
 
@@ -353,7 +353,7 @@ func BuildMaze(w int,r int) * Maze {
 					a.Join(ps)
 
 					if areas.HasArea(ps) {
-						areas.Remove(ps)
+						areas.RemoveArea(ps)
 					}
 
 					ps=a
