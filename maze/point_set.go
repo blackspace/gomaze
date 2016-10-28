@@ -1,82 +1,43 @@
 package maze
 
-import "strconv"
+import (
+	"github.com/emirpasic/gods/sets/treeset"
+	"github.com/emirpasic/gods/utils"
+)
 
 type PointSet struct {
-	_data []int64
+	_data *treeset.Set
 }
 
 func NewPointSet() *PointSet {
-	return &PointSet{_data:make([]int64,0,1<<10)}
+	return &PointSet{_data:treeset.NewWith(utils.Int64Comparator)}
 }
 
 func (p *PointSet)Add(x,y int) {
 	temp:=int64(x)<<32+int64(y)
 	if !p.HasPoint(x,y) {
-		p._data =append(p._data,temp)
+		p._data.Add(temp)
 	}
 }
 
 
 func (p *PointSet)HasPoint(x,y int) bool {
 	temp:=int64(x)<<32+int64(y)
-	for i:=0;i<len(p._data);i++ {
-		if temp==p._data[i] {
-			return true
-		}
-	}
-
-	return false
+	return p._data.Contains(temp)
 }
 
-func (p *PointSet)Index(i int) (x,y int) {
-	temp:=p._data[i]
-
-	x=int(temp>>32)
-	y=int(temp&0xffffffff)
-
-	return
-}
 
 func (p *PointSet)Count() int {
-	return len(p._data)
+	return p._data.Size()
 }
 
 func (p *PointSet)Join(jp *PointSet) {
-	for i:=0;i<jp.Count();i++ {
-		x,y:=jp.Index(i)
+	jp._data.Each(func(index int,value interface{}){
+		x:=int((value.(int64))>>32)
+		y:=int((value.(int64)&0xffffffff))
 		p.Add(x,y)
-	}
+	})
 }
 
-func (p *PointSet)Equal(tp *PointSet) bool {
-	if len(p._data)!=len(tp._data) {
-		return false
-	}
 
-	for i:=0;i<len(p._data);i++ {
-		x,y:=p.Index(i)
 
-		if !tp.HasPoint(x,y) {
-			return false
-		}
-	}
-
-	for i:=0;i<len(tp._data);i++ {
-		x,y:=tp.Index(i)
-
-		if !p.HasPoint(x,y) {
-			return false
-		}
-	}
-
-	return true
-}
-
-func (p *PointSet)String() (result string) {
-	for i:=0;i<p.Count();i++ {
-		x,y:=p.Index(i)
-		result=result+"("+strconv.Itoa(x)+","+strconv.Itoa(y)+")"
-	}
-	return  result
-}
