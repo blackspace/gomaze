@@ -14,16 +14,14 @@ func NewPointSet() *PointSet {
 }
 
 func (p *PointSet)Add(x,y int) {
-	temp:=int64(x)<<32+int64(y)
 	if !p.HasPoint(x,y) {
-		p._data.Add(temp)
+		p._data.Add(PointToInt64(x,y))
 	}
 }
 
 
 func (p *PointSet)HasPoint(x,y int) bool {
-	temp:=int64(x)<<32+int64(y)
-	return p._data.Contains(temp)
+	return p._data.Contains(PointToInt64(x,y))
 }
 
 
@@ -33,8 +31,7 @@ func (p *PointSet)Count() int {
 
 func (p *PointSet)Join(jp *PointSet) {
 	jp._data.Each(func(index int,value interface{}){
-		x:=int((value.(int64))>>32)
-		y:=int((value.(int64)&0xffffffff))
+		x,y:=Int64ToPoint(value.(int64))
 		p.Add(x,y)
 	})
 }

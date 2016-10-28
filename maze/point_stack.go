@@ -15,18 +15,14 @@ func NewPointStack() *PointStack {
 
 
 func (p *PointStack)Push(x,y int) {
-	temp:=int64(x)<<32+int64(y)
-	p._data.Push(temp)
+	p._data.Push(PointToInt64(x,y))
 }
 
 func (p *PointStack)Pop() (x,y int) {
 	if v,ok:=p._data.Pop();ok{
-		temp:=v.(int64)
+		x,y=Int64ToPoint(v.(int64))
 
-		tx:=temp>>32
-		ty:=temp&0xffffffff
-
-		return int(tx),int(ty)
+		return
 	} else {
 		panic("This point stack is empty.")
 	}
@@ -34,16 +30,13 @@ func (p *PointStack)Pop() (x,y int) {
 
 func (p *PointStack)Last() (x,y int,ok bool){
 	v,ok:=p._data.Peek()
-	temp:=v.(int64)
-	x=int(temp>>32)
-	y=int(temp&0xffffffff)
+	x,y=Int64ToPoint(v.(int64))
 
 	return
-
 }
 
 func (p *PointStack)HasPoint(x,y int) bool {
-	temp:=int64(x)<<32+int64(y)
+	temp:=PointToInt64(x,y)
 	it := p._data.Iterator()
 	for it.Next() {
 		_, v := it.Index(), it.Value()
@@ -58,10 +51,7 @@ func (p *PointStack)HasPoint(x,y int) bool {
 
 func (p *PointStack)Values() (result []Point) {
  	for _,v:=range p._data.Values() {
-		temp:=v.(int64)
-		x:=int(temp>>32)
-		y:=int(temp&0xffffffff)
-
+		x,y:=Int64ToPoint(v.(int64))
 		result=append(result,Point{x,y})
 	}
 
