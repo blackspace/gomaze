@@ -44,12 +44,12 @@ func main() {
 	renderer.SetDrawColor(150, 10, 10, 255)
 
 
-	if temp:=path.Values();temp!=nil  {
-		for i:=0;i<len(temp)-1;i++ {
-			x0:=temp[i].X
-			y0:=temp[i].Y
-			x1:=temp[i+1].X
-			y1:=temp[i+1].Y
+	if aps :=path.GetAllPoints(); aps !=nil  {
+		for i:=0;i<len(aps)-1;i++ {
+			x0:= aps[i].X
+			y0:= aps[i].Y
+			x1:= aps[i+1].X
+			y1:= aps[i+1].Y
 			renderer.DrawLine(x0*w+w/2,y0*w+w/2,x1*w+w/2,y1*w+w/2)
 		}
 	}

@@ -47,7 +47,7 @@ func (p *PointStack)HasPoint(x,y int) bool {
 	return false
 }
 
-func (p *PointStack)Values() (result []Point) {
+func (p *PointStack)GetAllPoints() (result []Point) {
  	for _,v:=range p._data.Values() {
 		x,y:= Int64ToXY(v.(int64))
 		result=append(result,Point{x,y})
