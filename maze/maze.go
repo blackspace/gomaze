@@ -70,7 +70,7 @@ func (m *Maze)GetRightTopCell() (int,int) {
 	return m.Len()-1,0
 }
 
-func (m *Maze)IsOpen(x,y,direction int) bool {
+func (m *Maze)IsOpenCellOn(x,y,direction int) bool {
 	cell:=m.GetCell(x,y)
 	switch direction {
 	case UP:
@@ -166,7 +166,7 @@ func (m *Maze)FindPath(x0,y0,x1,y1 int,path * PointStack)  {
 
 	path.Push(x0,y0)
 
-	if m.GetCell(x0,y0-1)!=nil&&m.IsOpen(x0,y0,UP)&&!path.HasPoint(x0,y0-1) {
+	if m.GetCell(x0,y0-1)!=nil&&m.IsOpenCellOn(x0,y0,UP)&&!path.HasPoint(x0,y0-1) {
 		m.FindPath(x0,y0-1,x1,y1,path)
 
 		if lx,ly,ok:=path.Peek(); ok && lx==x1 && ly==y1 {
@@ -174,7 +174,7 @@ func (m *Maze)FindPath(x0,y0,x1,y1 int,path * PointStack)  {
 		}
 
 	}
-	if m.GetCell(x0,y0+1)!=nil&&m.IsOpen(x0,y0,DOWN)&&!path.HasPoint(x0,y0+1) {
+	if m.GetCell(x0,y0+1)!=nil&&m.IsOpenCellOn(x0,y0,DOWN)&&!path.HasPoint(x0,y0+1) {
 		m.FindPath(x0,y0+1,x1,y1,path)
 
 		if lx,ly,ok:=path.Peek(); ok &&lx==x1 && ly==y1 {
@@ -182,7 +182,7 @@ func (m *Maze)FindPath(x0,y0,x1,y1 int,path * PointStack)  {
 		}
 
 	}
-	if m.GetCell(x0+1,y0)!=nil&&m.IsOpen(x0,y0,RIGHT)&&!path.HasPoint(x0+1,y0) {
+	if m.GetCell(x0+1,y0)!=nil&&m.IsOpenCellOn(x0,y0,RIGHT)&&!path.HasPoint(x0+1,y0) {
 		m.FindPath(x0+1,y0,x1,y1,path)
 
 		if lx,ly,ok:=path.Peek();ok && lx==x1 && ly==y1 {
@@ -190,7 +190,7 @@ func (m *Maze)FindPath(x0,y0,x1,y1 int,path * PointStack)  {
 		}
 
 	}
-	if m.GetCell(x0-1,y0)!=nil&&m.IsOpen(x0,y0,LEFT)&&!path.HasPoint(x0-1,y0){
+	if m.GetCell(x0-1,y0)!=nil&&m.IsOpenCellOn(x0,y0,LEFT)&&!path.HasPoint(x0-1,y0){
 		m.FindPath(x0-1,y0,x1,y1,path)
 
 		if lx,ly,ok:=path.Peek(); ok &&lx==x1 && ly==y1 {
@@ -249,19 +249,19 @@ func BuildMaze(w int,r int) * Maze {
 
 		next_act_0 :=make([]int,0,4)
 		next_act_final :=make([]int,0,4)
-		if ww.UpCell()!=nil && !mm.IsOpen(ww.current_x,ww.current_y,UP) {
+		if ww.UpCell()!=nil && !mm.IsOpenCellOn(ww.current_x,ww.current_y,UP) {
 			next_act_0 =append(next_act_0,UP)
 		}
 
-		if ww.DownCell()!=nil && !mm.IsOpen(ww.current_x,ww.current_y,DOWN) {
+		if ww.DownCell()!=nil && !mm.IsOpenCellOn(ww.current_x,ww.current_y,DOWN) {
 			next_act_0 =append(next_act_0,DOWN)
 		}
 
-		if ww.LeftCell()!=nil && !mm.IsOpen(ww.current_x,ww.current_y,LEFT)  {
+		if ww.LeftCell()!=nil && !mm.IsOpenCellOn(ww.current_x,ww.current_y,LEFT)  {
 			next_act_0 =append(next_act_0,LEFT)
 		}
 
-		if ww.RightCell()!=nil && !mm.IsOpen(ww.current_x,ww.current_y,RIGHT) {
+		if ww.RightCell()!=nil && !mm.IsOpenCellOn(ww.current_x,ww.current_y,RIGHT) {
 			next_act_0 =append(next_act_0,RIGHT)
 		}
 
