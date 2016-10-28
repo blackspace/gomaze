@@ -23,28 +23,28 @@ func (w *Worm)GetInMaze(x,y int) {
 	w.current_y =y
 }
 
-func (w *Worm)CurrentPosition() (x,y int) {
+func (w *Worm)CurrentPosition() (int,int) {
 	return w.current_x,w.current_y
 }
 
 func (w *Worm)UpCell() *Cell {
-	return w.Maze.Get(w.current_x,w.current_y -1)
+	return w.Maze.GetCell(w.current_x,w.current_y -1)
 }
 
 func (w *Worm)DownCell()  *Cell  {
-	return w.Maze.Get(w.current_x,w.current_y +1)
+	return w.Maze.GetCell(w.current_x,w.current_y +1)
 }
 
 func (w *Worm)LeftCell() *Cell {
-	return w.Maze.Get(w.current_x -1,w.current_y)
+	return w.Maze.GetCell(w.current_x -1,w.current_y)
 }
 
 func (w *Worm)RightCell() *Cell {
-	return w.Maze.Get(w.current_x +1,w.current_y)
+	return w.Maze.GetCell(w.current_x +1,w.current_y)
 }
 
 func (w *Worm)Up()  {
-	cell:=w.Maze.Get(w.current_x,w.current_y)
+	cell:=w.Maze.GetCell(w.current_x,w.current_y)
 	next_cell :=w.UpCell()
 
 	if next_cell !=nil  {
@@ -57,7 +57,7 @@ func (w *Worm)Up()  {
 }
 
 func (w *Worm)Down()  {
-	cell:=w.Maze.Get(w.current_x,w.current_y)
+	cell:=w.Maze.GetCell(w.current_x,w.current_y)
 	next_cell:=w.DownCell()
 
 	if next_cell !=nil  {
@@ -71,7 +71,7 @@ func (w *Worm)Down()  {
 }
 
 func (w *Worm)Left()  {
-	cell:=w.Maze.Get(w.current_x,w.current_y)
+	cell:=w.Maze.GetCell(w.current_x,w.current_y)
 	next_cell:=w.LeftCell()
 
 	if next_cell !=nil  {
@@ -85,7 +85,7 @@ func (w *Worm)Left()  {
 
 
 func (w *Worm)Right()  {
-	cell:=w.Maze.Get(w.current_x,w.current_y)
+	cell:=w.Maze.GetCell(w.current_x,w.current_y)
 	next_cell:=w.RightCell()
 
 	if next_cell !=nil {

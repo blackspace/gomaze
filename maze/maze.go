@@ -28,7 +28,7 @@ func (m *Maze)Len() int {
 	return len(m.Cells)
 }
 
-func (m *Maze)Get(x,y int) *Cell{
+func (m *Maze)GetCell(x,y int) *Cell{
 	if x+1>m.Len() || y+1>m.Len() {
 		return nil
 	}
@@ -38,7 +38,7 @@ func (m *Maze)Get(x,y int) *Cell{
 	return &m.Cells[x][y]
 }
 
-func (m *Maze)Has(x,y int) bool {
+func (m *Maze)HasCell(x,y int) bool {
 	if x+1>m.Len() || y+1>m.Len() {
 		return false
 	}
@@ -52,7 +52,7 @@ func (m *Maze)Has(x,y int) bool {
 func (m *Maze)GetFirstClosedCell() (int,int,bool){
 	for y:=0;y<len(m.Cells);y++ {
 		for x:=0;x<len(m.Cells);x++ {
-			cell:=m.Get(x,y)
+			cell:=m.GetCell(x,y)
 			if cell.IsClosed() {
 				return x,y,true
 			}
@@ -62,19 +62,19 @@ func (m *Maze)GetFirstClosedCell() (int,int,bool){
 	return -1,-1,false
 }
 
-func (m *Maze)LeftBottom() int {
+func (m *Maze)GetLeftBottomCell() (int,int) {
 	return 0,m.Len()-1
 }
 
-func (m *Maze)RightTop() (int,int) {
+func (m *Maze)GetRightTopCell() (int,int) {
 	return m.Len()-1,0
 }
 
 func (m *Maze)IsOpen(x,y,direction int) bool {
-	cell:=m.Get(x,y)
+	cell:=m.GetCell(x,y)
 	switch direction {
 	case UP:
-		next_cell:=m.Get(x,y-1)
+		next_cell:=m.GetCell(x,y-1)
 
 		if next_cell!=nil {
 			if cell.HasTop() || next_cell.HasBottom() {
@@ -86,7 +86,7 @@ func (m *Maze)IsOpen(x,y,direction int) bool {
 			panic(errors.New("Cant UP"))
 		}
 	case DOWN:
-		next_cell:=m.Get(x,y+1)
+		next_cell:=m.GetCell(x,y+1)
 
 		if next_cell!=nil {
 			if cell.HasBottom() || next_cell.HasTop() {
@@ -98,7 +98,7 @@ func (m *Maze)IsOpen(x,y,direction int) bool {
 			panic(errors.New("Cant DOWN"))
 		}
 	case LEFT:
-		next_cell:=m.Get(x-1,y)
+		next_cell:=m.GetCell(x-1,y)
 
 		if next_cell!=nil {
 			if cell.HasLeft() || next_cell.HasRight() {
@@ -111,7 +111,7 @@ func (m *Maze)IsOpen(x,y,direction int) bool {
 			panic(errors.New("Cant LEFT"))
 		}
 	case RIGHT:
-		next_cell:=m.Get(x+1,y)
+		next_cell:=m.GetCell(x+1,y)
 
 		if next_cell!=nil {
 			if cell.HasRight() || next_cell.HasLeft() {
@@ -128,46 +128,12 @@ func (m *Maze)IsOpen(x,y,direction int) bool {
 
 }
 
-func (m *Maze)GetJoiningPointSet(cx,cy int,ps *PointSet){
-	ps.AddPoint(cx,cy)
-
-	if m.Has(cx,cy-1) && m.IsOpen(cx,cy,UP) && !ps.HasPoint(cx,cy-1)  {
-		m.GetJoiningPointSet(cx,cy-1,ps)
-
-	}
-
-	if m.Has(cx,cy+1) && m.IsOpen(cx,cy,DOWN) && !ps.HasPoint(cx,cy+1)  {
-		m.GetJoiningPointSet(cx,cy+1,ps)
-
-	}
-
-	if m.Has(cx-1,cy) && m.IsOpen(cx,cy,LEFT) && !ps.HasPoint(cx-1,cy)  {
-		m.GetJoiningPointSet(cx-1,cy,ps)
-
-	}
-
-	if m.Has(cx+1,cy) && m.IsOpen(cx,cy,RIGHT) && !ps.HasPoint(cx+1,cy)  {
-		m.GetJoiningPointSet(cx+1,cy,ps)
-	}
-}
-
-func (m *Maze)HasClosed() (result int) {
-	for y:=0;y<len(m.Cells);y++ {
-		for x:=0;x<len(m.Cells);x++ {
-			if m.Cells[x][y].IsClosed() {
-				result++
-			}
-		}
-	}
-	return
-}
-
 func (m *Maze)Draw(r *sdl.Renderer,w int) {
 	n:=m.Len()
 
 	for y:=0;y<n;y++ {
 		for x:=0;x<n;x++ {
-			cell:=m.Get(x,y)
+			cell:=m.GetCell(x,y)
 
 			location_x:=x*w
 			location_y:=y*w
@@ -200,7 +166,7 @@ func (m *Maze)FindPath(x0,y0,x1,y1 int,path * PointStack)  {
 
 	path.Push(x0,y0)
 
-	if m.Get(x0,y0-1)!=nil&&m.IsOpen(x0,y0,UP)&&!path.HasPoint(x0,y0-1) {
+	if m.GetCell(x0,y0-1)!=nil&&m.IsOpen(x0,y0,UP)&&!path.HasPoint(x0,y0-1) {
 		m.FindPath(x0,y0-1,x1,y1,path)
 
 		if lx,ly,ok:=path.Peek(); ok && lx==x1 && ly==y1 {
@@ -208,7 +174,7 @@ func (m *Maze)FindPath(x0,y0,x1,y1 int,path * PointStack)  {
 		}
 
 	}
-	if m.Get(x0,y0+1)!=nil&&m.IsOpen(x0,y0,DOWN)&&!path.HasPoint(x0,y0+1) {
+	if m.GetCell(x0,y0+1)!=nil&&m.IsOpen(x0,y0,DOWN)&&!path.HasPoint(x0,y0+1) {
 		m.FindPath(x0,y0+1,x1,y1,path)
 
 		if lx,ly,ok:=path.Peek(); ok &&lx==x1 && ly==y1 {
@@ -216,7 +182,7 @@ func (m *Maze)FindPath(x0,y0,x1,y1 int,path * PointStack)  {
 		}
 
 	}
-	if m.Get(x0+1,y0)!=nil&&m.IsOpen(x0,y0,RIGHT)&&!path.HasPoint(x0+1,y0) {
+	if m.GetCell(x0+1,y0)!=nil&&m.IsOpen(x0,y0,RIGHT)&&!path.HasPoint(x0+1,y0) {
 		m.FindPath(x0+1,y0,x1,y1,path)
 
 		if lx,ly,ok:=path.Peek();ok && lx==x1 && ly==y1 {
@@ -224,7 +190,7 @@ func (m *Maze)FindPath(x0,y0,x1,y1 int,path * PointStack)  {
 		}
 
 	}
-	if m.Get(x0-1,y0)!=nil&&m.IsOpen(x0,y0,LEFT)&&!path.HasPoint(x0-1,y0){
+	if m.GetCell(x0-1,y0)!=nil&&m.IsOpen(x0,y0,LEFT)&&!path.HasPoint(x0-1,y0){
 		m.FindPath(x0-1,y0,x1,y1,path)
 
 		if lx,ly,ok:=path.Peek(); ok &&lx==x1 && ly==y1 {
