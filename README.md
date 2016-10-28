@@ -8,7 +8,7 @@ About Installing
 First because the gomaze draws the maze by sdl2,you should install 
 go-sdl2 by following the installing instructions from the [go-sdl2](https://github.com/veandco/go-sdl2) page.
 
-I take [gods](https://github.com/emirpasic/gods) as the data struction of point set,so then 
+Gomaze take the treeset of [gods](https://github.com/emirpasic/gods) as the data struction of point set,so then 
 
 `
 go get github.com/emirpasic/gods
