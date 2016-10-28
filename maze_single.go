@@ -43,11 +43,18 @@ func main() {
 	mm.Draw(renderer,w)
 	renderer.SetDrawColor(150, 10, 10, 255)
 
-	for i:=0;i<path.Count()-1;i++ {
-		x0,y0:=path.Index(i)
-		x1,y1:=path.Index(i+1)
-		renderer.DrawLine(x0*w+w/2,y0*w+w/2,x1*w+w/2,y1*w+w/2)
+
+	if temp:=path.Values();temp!=nil  {
+		for i:=0;i<len(temp)-1;i++ {
+			x0:=temp[i].X
+			y0:=temp[i].Y
+			x1:=temp[i+1].X
+			y1:=temp[i+1].Y
+			renderer.DrawLine(x0*w+w/2,y0*w+w/2,x1*w+w/2,y1*w+w/2)
+		}
 	}
+
+
 
 	renderer.Present()
 
