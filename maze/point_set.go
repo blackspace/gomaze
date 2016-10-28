@@ -15,13 +15,13 @@ func NewPointSet() *PointSet {
 
 func (p *PointSet)Add(x,y int) {
 	if !p.HasPoint(x,y) {
-		p._data.Add(PointToInt64(x,y))
+		p._data.Add(XYToInt64(x,y))
 	}
 }
 
 
 func (p *PointSet)HasPoint(x,y int) bool {
-	return p._data.Contains(PointToInt64(x,y))
+	return p._data.Contains(XYToInt64(x,y))
 }
 
 
@@ -31,7 +31,7 @@ func (p *PointSet)Count() int {
 
 func (p *PointSet)Join(jp *PointSet) {
 	jp._data.Each(func(index int,value interface{}){
-		x,y:=Int64ToPoint(value.(int64))
+		x,y:= Int64ToXY(value.(int64))
 		p.Add(x,y)
 	})
 }
