@@ -71,7 +71,6 @@ func main() {
 		case *sdl.QuitEvent:
 			break L
 		}
-
 	}
 
 	sdl.Quit()
