@@ -13,7 +13,7 @@ func NewPointSet() *PointSet {
 	return &PointSet{_data:treeset.NewWith(utils.Int64Comparator)}
 }
 
-func (p *PointSet)Add(x,y int) {
+func (p *PointSet)AddPoint(x,y int) {
 	if !p.HasPoint(x,y) {
 		p._data.Add(XYToInt64(x,y))
 	}
@@ -32,7 +32,7 @@ func (p *PointSet)Size() int {
 func (p *PointSet)Join(jp *PointSet) {
 	jp._data.Each(func(index int,value interface{}){
 		x,y:= Int64ToXY(value.(int64))
-		p.Add(x,y)
+		p.AddPoint(x,y)
 	})
 }
 

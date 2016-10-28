@@ -129,7 +129,7 @@ func (m *Maze)IsOpen(x,y,direction int) bool {
 }
 
 func (m *Maze)GetJoiningPointSet(cx,cy int,ps *PointSet){
-	ps.Add(cx,cy)
+	ps.AddPoint(cx,cy)
 
 	if m.Has(cx,cy-1) && m.IsOpen(cx,cy,UP) && !ps.HasPoint(cx,cy-1)  {
 		m.GetJoiningPointSet(cx,cy-1,ps)
@@ -278,7 +278,7 @@ func BuildMaze(w int,r int) * Maze {
 	for {
 		if ps==nil {
 			ps = NewPointSet()
-			ps.Add(ww.current_x, ww.current_y)
+			ps.AddPoint(ww.current_x, ww.current_y)
 		}
 
 		next_act_0 :=make([]int,0,4)
@@ -361,7 +361,7 @@ func BuildMaze(w int,r int) * Maze {
 					panic("Want merge a area but Cant find any area")
 				}
 			} else  {
-				ps.Add(ww.current_x,ww.current_y)
+				ps.AddPoint(ww.current_x,ww.current_y)
 			}
 
 		} else {
